@@ -14,8 +14,22 @@ export class Movies {
   movies = signal<Movie[]>([]);
 
   ngOnInit(): void {
-    this.apiService.getRandomMovie().subscribe((movie: Movie) => {
-      this.movies.set([movie]);
+    this.loadRandomMovie();
+  }
+
+  private loadRandomMovie(): void {
+    this.apiService.getRandomMovie().subscribe({
+      next: (movie: Movie) => {
+        this.movies.set([movie]);
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          console.error('Movie not found, retrying...');
+          this.loadRandomMovie();
+        } else {
+          console.error('Error fetching movie', error);
+        }
+      },
     });
   }
 }
