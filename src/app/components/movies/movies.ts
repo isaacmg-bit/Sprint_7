@@ -1,4 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ApiRequest } from '../../services/apirequest';
 import { Movie } from '../../models/movie';
 
@@ -9,27 +12,23 @@ import { Movie } from '../../models/movie';
   styleUrl: './movies.css',
 })
 export class Movies {
-  apiService = inject(ApiRequest);
+  private apiService = inject(ApiRequest);
 
-  movies = signal<Movie[]>([]);
-
-  ngOnInit(): void {
-    this.loadRandomMovie();
-  }
-
-  private loadRandomMovie(): void {
-    this.apiService.getRandomMovie().subscribe({
-      next: (movie: Movie) => {
-        this.movies.set([movie]);
-      },
-      error: (error) => {
-        if (error.status === 404) {
-          console.error('Movie not found, retrying...');
-          this.loadRandomMovie();
-        } else {
-          console.error('Error fetching movie', error);
-        }
-      },
-    });
-  }
+  movies = toSignal(
+    forkJoin(
+      Array.from({ length: 20 }, () =>
+        this.apiService.getRandomMovie().pipe(
+          catchError((error) => {
+            if (error.status === 404) {
+              console.warn('Movie not found, skipping...');
+              return of(null);
+            }
+            console.error('Error fetching movie', error);
+            return of(null);
+          }),
+        ),
+      ),
+    ).pipe(map((movies) => movies.filter((m) => m !== null).slice(0, 10) as Movie[])),
+    { initialValue: [] as Movie[] },
+  );
 }
