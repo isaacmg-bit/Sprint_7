@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environment/environment';
 import { Movie } from '../models/movie';
+import { MovieApi } from '../models/movie-api';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { Movie } from '../models/movie';
 export class ApiRequest {
   private http = inject(HttpClient);
 
-  apiRequest() {
+  private buildRequest() {
     const randomId = Math.floor(Math.random() * 250) + 1;
     const url = `${environment.apiUrl}/movie/${randomId}`;
     const headers = new HttpHeaders({
@@ -21,16 +22,25 @@ export class ApiRequest {
   }
 
   getRandomMovie() {
-    const request = this.apiRequest();
-    return this.http.get<Movie>(request.url, { headers: request.headers }).pipe(
-      map((movie) => {
-        if (movie.adult) {
+    const request = this.buildRequest();
+
+    return this.http.get<MovieApi>(request.url, { headers: request.headers }).pipe(
+      map((movieApi) => {
+        if (movieApi.adult) {
           throw { status: 404, message: 'Adult content filtered' };
         }
-        return movie;
+
+        return {
+          id: movieApi.id,
+          title: movieApi.title,
+
+          genresText: movieApi.genres.map((g) => g.name).join(', '),
+
+          overview: movieApi.overview,
+          runtime: movieApi.runtime,
+          vote_average: movieApi.vote_average,
+        } as Movie;
       }),
     );
   }
-
-  getMovieData() {}
 }
