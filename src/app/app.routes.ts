@@ -17,4 +17,8 @@ export const routes: Routes = [
     path: 'movies',
     component: Movies,
   },
+  { 
+    path: 'moviecard/:id',
+    component: MovieCard,
+  },
 ];
