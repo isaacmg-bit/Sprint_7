@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ApiRequest } from '../../services/apirequest';
 import { Movie } from '../../models/movie';
+import { MovieService } from '../../services/movieservice';
 
 @Component({
   selector: 'app-movies',
@@ -12,12 +12,12 @@ import { Movie } from '../../models/movie';
   styleUrl: './movies.css',
 })
 export class Movies {
-  private apiService = inject(ApiRequest);
+  private movieService = inject(MovieService);
 
   movies = toSignal(
     forkJoin(
       Array.from({ length: 20 }, () =>
-        this.apiService.getRandomMovie().pipe(
+        this.movieService.getRandomMovie().pipe(
           catchError((error) => {
             if (error.status === 404) {
               console.warn('Movie not found, skipping...');
