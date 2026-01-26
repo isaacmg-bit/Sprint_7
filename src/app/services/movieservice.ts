@@ -2,14 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { ApiService } from './apirequest';
 import { environment } from '../../environment/environment';
 import { MovieApi } from '../models/movie-api';
-import { map } from 'rxjs';
 import { Movie } from '../models/movie';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService);
 
   private getRandomId() {
     return Math.floor(Math.random() * 250) + 1;
@@ -43,4 +45,22 @@ export class MovieService {
       vote_average: api.vote_average,
     };
   }
+
+  movies = toSignal(
+    forkJoin(
+      Array.from({ length: 20 }, () =>
+        this.getRandomMovie().pipe(
+          catchError((error) => {
+            if (error.status === 404) {
+              console.warn('Movie not found, skipping...');
+              return of(null);
+            }
+            console.error('Error fetching movie', error);
+            return of(null);
+          }),
+        ),
+      ),
+    ).pipe(map((movies) => movies.filter((m) => m !== null).slice(0, 10) as Movie[])),
+    { initialValue: [] as Movie[] },
+  );
 }
