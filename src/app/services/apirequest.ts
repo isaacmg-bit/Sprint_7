@@ -33,9 +33,10 @@ export class ApiRequest {
         return {
           id: movieApi.id,
           title: movieApi.title,
-
+          release_date: movieApi.release_date,
+          adult: movieApi.adult,
           genresText: movieApi.genres.map((g) => g.name).join(', '),
-
+          origin_country: movieApi.origin_country,
           overview: movieApi.overview,
           runtime: movieApi.runtime,
           vote_average: movieApi.vote_average,
