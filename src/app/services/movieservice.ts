@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { ApiService } from './apirequest';
 import { environment } from '../../environment/environment';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, Observable, of, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -13,15 +13,17 @@ import { catchError, map } from 'rxjs/operators';
 export class MovieService {
   private api = inject(ApiService);
 
-  private getRandomId() {
+  loading = signal(true);
+
+  private getRandomId(): number {
     return Math.floor(Math.random() * 250) + 1;
   }
 
-  private buildMovieUrl(id: number) {
+  private buildMovieUrl(id: number): string {
     return `${environment.apiUrl}/movie/${id}`;
   }
 
-  getRandomMovie() {
+  getRandomMovie(): Observable<Movie> {
     const id = this.getRandomId();
     const url = this.buildMovieUrl(id);
 
@@ -30,7 +32,7 @@ export class MovieService {
 
   private mapMovie(api: MovieApi): Movie {
     if (api.adult) {
-      throw { status: 404 };
+      throw new Error('Adult movie filtered');
     }
 
     return {
@@ -61,7 +63,10 @@ export class MovieService {
           }),
         ),
       ),
-    ).pipe(map((movies) => movies.filter((m) => m !== null).slice(0, 10) as Movie[])),
-    { initialValue: [] as Movie[] },
+    ).pipe(
+      map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 10)),
+      tap(() => this.loading.set(false)),
+    ),
+    { initialValue: [] },
   );
 }

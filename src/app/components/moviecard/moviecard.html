@@ -1,16 +1,16 @@
-@if (selectedMovie) {
+@if (selectedMovie()) {
   <div class="mx-auto max-w-6xl px-4 py-4 space-y-4">
     <a
       class="block rounded-lg bg-white/5 px-6 py-4 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      <p class="text-lg font-semibold text-white">{{ selectedMovie.title }}</p>
-      <p class="text-sm text-gray-400">Release date: {{ selectedMovie.release_date }}</p>
-      <p class="text-sm text-gray-400">Genre: {{ selectedMovie.genresText }}</p>
-      <p class="text-sm text-gray-400">Country: {{ selectedMovie.origin_country }}</p>
-      <p class="text-sm text-gray-400">{{ selectedMovie.overview }}</p>
-      <p class="text-sm text-gray-400">Runtime: {{ selectedMovie.runtime }}</p>
-      <p class="text-sm text-gray-400">User score: {{ selectedMovie.vote_average }}</p>
-      <img src="https://image.tmdb.org/t/p/w780/{{ selectedMovie.backdrop_path }}" alt="" />
+      <p class="text-lg font-semibold text-white">{{ selectedMovie()!.title }}</p>
+      <p class="text-sm text-gray-400">Release date: {{ selectedMovie()!.release_date }}</p>
+      <p class="text-sm text-gray-400">Genre: {{ selectedMovie()!.genresText }}</p>
+      <p class="text-sm text-gray-400">Country: {{ selectedMovie()!.origin_country }}</p>
+      <p class="text-sm text-gray-400">{{ selectedMovie()!.overview }}</p>
+      <p class="text-sm text-gray-400">Runtime: {{ selectedMovie()!.runtime }}</p>
+      <p class="text-sm text-gray-400">User score: {{ selectedMovie()!.vote_average }}</p>
+      <img src="https://image.tmdb.org/t/p/w780/{{ selectedMovie()!.backdrop_path }}" alt="" />
     </a>
   </div>
 }

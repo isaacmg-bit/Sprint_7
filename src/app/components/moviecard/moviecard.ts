@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movieservice';
 
@@ -8,19 +8,20 @@ import { MovieService } from '../../services/movieservice';
   templateUrl: './moviecard.html',
   styleUrl: './moviecard.css',
 })
-export class MovieCard {
+export class MovieCard implements OnInit {
   private readonly route = inject(ActivatedRoute);
   readonly movieService = inject(MovieService);
 
-  movieId!: number;
+  movieId = signal<number>(0);
+
+  selectedMovie = computed(() => {
+    const id = this.movieId();
+    return this.movieService.movies().find((movie) => movie.id === id);
+  });
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.movieId = Number(params['id']);
+      this.movieId = params['id'];
     });
-  }
-
-  get selectedMovie() {
-    return this.movieService.movies().find((movie) => movie.id === this.movieId);
   }
 }
