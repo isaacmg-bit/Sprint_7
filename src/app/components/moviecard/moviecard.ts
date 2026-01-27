@@ -19,4 +19,8 @@ export class MovieCard {
       this.movieId = Number(params['id']);
     });
   }
+
+  get selectedMovie() {
+    return this.movieService.movies().find((movie) => movie.id === this.movieId);
+  }
 }
