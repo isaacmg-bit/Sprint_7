@@ -3,7 +3,6 @@ import { ApiService } from './apirequest';
 import { environment } from '../../environment/environment';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { forkJoin, Observable, of, tap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -14,6 +13,7 @@ export class MovieService {
   private api = inject(ApiService);
 
   loading = signal(true);
+  movies = signal<Movie[]>([]);
 
   private getRandomId(): number {
     return Math.floor(Math.random() * 250) + 1;
@@ -49,7 +49,7 @@ export class MovieService {
     };
   }
 
-  movies = toSignal(
+  fetchMovies() {
     forkJoin(
       Array.from({ length: 20 }, () =>
         this.getRandomMovie().pipe(
@@ -63,10 +63,13 @@ export class MovieService {
           }),
         ),
       ),
-    ).pipe(
-      map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 10)),
-      tap(() => this.loading.set(false)),
-    ),
-    { initialValue: [] },
-  );
+    )
+      .pipe(
+        map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 10)),
+        tap(() => this.loading.set(false)),
+      )
+      .subscribe((filteredMovies) => {
+        this.movies.set(filteredMovies);
+      });
+  }
 }
