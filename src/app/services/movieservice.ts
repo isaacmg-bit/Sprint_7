@@ -12,7 +12,7 @@ import { catchError, map } from 'rxjs/operators';
 export class MovieService {
   private api = inject(ApiService);
 
-  loading = signal(false);
+  loading = signal<boolean>(false);
   movies = signal<Movie[]>([]);
 
   private getRandomId(): number {
@@ -49,7 +49,7 @@ export class MovieService {
     };
   }
 
-  fetchMovies() {
+  fetchMovies(): void {
     if (this.loading()) return;
     this.loading.set(true);
 
