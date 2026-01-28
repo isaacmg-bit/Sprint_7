@@ -67,7 +67,7 @@ export class MovieService {
         ),
       ),
     )
-      .pipe(map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).splice(0, 15)))
+      .pipe(map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 15)))
       .subscribe((newMovies) => {
         this.movies.update((current) => [...current, ...newMovies]);
         this.loading.set(false);
