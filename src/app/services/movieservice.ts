@@ -12,11 +12,11 @@ import { catchError, map } from 'rxjs/operators';
 export class MovieService {
   private api = inject(ApiService);
 
-  loading = signal(true);
+  loading = signal(false);
   movies = signal<Movie[]>([]);
 
   private getRandomId(): number {
-    return Math.floor(Math.random() * 250) + 1;
+    return Math.floor(Math.random() * 1000) + 1;
   }
 
   private buildMovieUrl(id: number): string {
@@ -50,8 +50,11 @@ export class MovieService {
   }
 
   fetchMovies() {
+    if (this.loading()) return;
+    this.loading.set(true);
+
     forkJoin(
-      Array.from({ length: 20 }, () =>
+      Array.from({ length: 30 }, () =>
         this.getRandomMovie().pipe(
           catchError((error) => {
             if (error.status === 404) {
@@ -64,12 +67,10 @@ export class MovieService {
         ),
       ),
     )
-      .pipe(
-        map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 10)),
-        tap(() => this.loading.set(false)),
-      )
-      .subscribe((filteredMovies) => {
-        this.movies.set(filteredMovies);
+      .pipe(map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).splice(0, 15)))
+      .subscribe((newMovies) => {
+        this.movies.update((current) => [...current, ...newMovies]);
+        this.loading.set(false);
       });
   }
 }

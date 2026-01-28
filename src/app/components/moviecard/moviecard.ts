@@ -16,12 +16,13 @@ export class MovieCard implements OnInit {
 
   selectedMovie = computed(() => {
     const id = this.movieId();
+
     return this.movieService.movies().find((movie) => movie.id === id);
   });
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.movieId = params['id'];
+      this.movieId.set(+params['id']);
     });
   }
 }
