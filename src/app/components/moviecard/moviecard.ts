@@ -3,10 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movieservice';
 import { Movie } from '../../models/movie';
 import { MovieCrew } from '../../models/moviecrew';
+import { ActorCard } from '../actorcard/actorcard';
 
 @Component({
   selector: 'app-moviecard',
-  imports: [],
+  imports: [ActorCard],
   templateUrl: './moviecard.html',
   styleUrl: './moviecard.css',
 })
