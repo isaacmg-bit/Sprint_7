@@ -1,7 +1,7 @@
 @if (selectedMovie()) {
   <div class="flex flex-wrap justify-center items-stretch gap-4 px-4">
     <div
-      class="xl:flex w-auto h-240 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+      class="xl:flex w-auto h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
       <img class="object-cover h-full" [src]="selectedMovie()?.posterUrl" alt="" />
     </div>
@@ -50,7 +50,9 @@
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedCrew()!.crewName }}
+            @for (actor of selectedCrew()!.cast.slice(0, 10); track actor.id) {
+              <p>{{ actor.name }}</p>
+            }
           </dd>
         </div>
 
