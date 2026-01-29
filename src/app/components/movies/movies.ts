@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, input } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movieservice';
 import { RouterModule } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
