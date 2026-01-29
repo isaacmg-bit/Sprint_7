@@ -43,6 +43,15 @@ export class MovieService {
     return this.api.get<MovieCrewApi>(url).pipe(map((api) => this.mapMovieCrew(api)));
   }
 
+  getDirectorByMovieId(movieId: number): string {
+    const crew = this.crew().find((c) => c.id === movieId);
+    return crew?.crewName || 'Unknown';
+  }
+  getPosterByMovieId(movieId: number): string {
+    const poster = this.movies().find((p) => p.id === movieId);
+    return poster?.poster_path || 'Unknown';
+  }
+
   private mapMovie(api: MovieApi): Movie {
     if (api.adult) {
       throw new Error('Adult movie filtered');
