@@ -14,6 +14,8 @@ import { MovieCrew } from '../models/moviecrew';
 export class MovieService {
   private api = inject(ApiService);
   private initialized = false;
+  private readonly imageBaseMovie = 'https://image.tmdb.org/t/p/w780';
+  private readonly imageBaseCrew = 'https://image.tmdb.org/t/p/w185';
 
   loading = signal<boolean>(false);
   movies = signal<Movie[]>([]);
@@ -50,7 +52,7 @@ export class MovieService {
   }
   getPosterByMovieId(movieId: number): string {
     const poster = this.movies().find((p) => p.id === movieId);
-    return poster?.poster_path || 'Unknown';
+    return poster?.posterUrl || 'Unknown';
   }
 
   private mapMovie(api: MovieApi): Movie {
@@ -59,10 +61,10 @@ export class MovieService {
     }
 
     return {
-      backdrop_path: api.backdrop_path,
-      poster_path: api.poster_path,
       id: api.id,
       title: api.title,
+      posterUrl: api.poster_path ? `${this.imageBaseMovie}${api.poster_path}` : '',
+      backdropUrl: api.backdrop_path ? `${this.imageBaseMovie}${api.backdrop_path}` : '',
       release_date: api.release_date,
       adult: api.adult,
       genresText: api.genres.map((g) => g.name).join(', '),
@@ -74,27 +76,18 @@ export class MovieService {
   }
 
   private mapMovieCrew(api: MovieCrewApi): MovieCrew {
-    const director = api.crew.find((person) => person.job === 'Director');
+    const director = api.crew.find((p) => p.job === 'Director');
 
     return {
       id: api.id,
-      castName: api.cast
-        .slice(0, 10)
-        .map((n) => n.name)
-        .join(', '),
-      castCharacter: api.cast
-        .slice(0, 10)
-        .map((n) => n.character)
-        .join(', '),
-      castPic: api.cast
-        .slice(0, 10)
-        .map((p) => (p.profile_path ? `https://image.tmdb.org/t/p/w185${p.profile_path}` : ''))
-        .join(', '),
-
+      cast: api.cast.slice(0, 10).map((actor) => ({
+        id: actor.id,
+        name: actor.name,
+        character: actor.character,
+        pic: actor.profile_path ? `${this.imageBaseCrew}${actor.profile_path}` : '',
+      })),
       crewName: director?.name || '',
-      crewPic: director?.profile_path
-        ? `https://image.tmdb.org/t/p/w185${director.profile_path}`
-        : '',
+      crewPic: director?.profile_path ? `${this.imageBaseCrew}${director.profile_path}` : '',
       crewRole: director?.job || '',
     };
   }

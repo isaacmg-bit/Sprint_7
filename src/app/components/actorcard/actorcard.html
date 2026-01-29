@@ -7,16 +7,18 @@
     <p class="text-xs text-gray-400">{{ crew().crewRole }}</p>
   </div>
 
-  @for (actor of crew().castName.split(', ').slice(0, 10); track $index) {
-    @if (crew().castPic.split(', ')[$index]) {
+  @for (actor of crew().cast; track actor.id) {
+    @if (actor.pic) {
       <div class="text-center">
-        <img
-          class="object-cover h-50 w-32 rounded"
-          [src]="crew().castPic.split(', ')[$index]"
-          alt="{{ actor }}"
-        />
-        <p class="text-xs text-gray-200 mt-1 w-32">{{ actor }}</p>
-        <p class="text-xs max-w-32 text-gray-400">{{ crew().castCharacter.split(', ')[$index] }}</p>
+        <img class="object-cover h-50 w-32 rounded" [src]="actor.pic" [alt]="actor.name" />
+
+        <p class="text-xs text-gray-200 mt-1 w-32">
+          {{ actor.name }}
+        </p>
+
+        <p class="text-xs text-gray-400">
+          {{ actor.character }}
+        </p>
       </div>
     }
   }
@@ -31,16 +33,18 @@
     <p class="text-xs text-gray-400">{{ crew().crewRole }}</p>
   </div>
 
-  @for (actor of crew().castName.split(', ').slice(0, 10); track $index) {
-    @if (crew().castPic.split(', ')[$index]) {
+  @for (actor of crew().cast; track actor.id) {
+    @if (actor.pic) {
       <div class="text-center">
-        <img
-          class="object-cover h-50 w-32 rounded"
-          [src]="crew().castPic.split(', ')[$index]"
-          alt="{{ actor }}"
-        />
-        <p class="text-xs text-gray-200 mt-1 w-32">{{ actor }}</p>
-        <p class="text-xs text-gray-400">{{ crew().castCharacter.split(', ')[$index] }}</p>
+        <img class="object-cover h-50 w-32 rounded" [src]="actor.pic" [alt]="actor.name" />
+
+        <p class="text-xs text-gray-200 mt-1 w-32">
+          {{ actor.name }}
+        </p>
+
+        <p class="text-xs text-gray-400">
+          {{ actor.character }}
+        </p>
       </div>
     }
   }

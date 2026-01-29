@@ -1,17 +1,18 @@
 export interface MovieCrewApi {
   id: number;
-  cast: [
-    {
-      name: string;
-      profile_path: string;
-      character: string;
-    },
-  ];
-  crew: [
-    {
-      name: string;
-      profile_path: string;
-      job: string;
-    },
-  ];
+
+  cast: {
+    id: number;
+    cast_id: number;
+    name: string;
+    character: string;
+    profile_path: string;
+  }[];
+
+  crew: {
+    id: number;
+    name: string;
+    job: string;
+    profile_path: string;
+  }[];
 }

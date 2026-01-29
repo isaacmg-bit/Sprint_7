@@ -1,8 +1,8 @@
 export interface Movie {
-  backdrop_path: string;
-  poster_path: string;
   id: number;
   title: string;
+  posterUrl: string;
+  backdropUrl: string;
   release_date: string;
   adult: boolean;
   genresText: string;

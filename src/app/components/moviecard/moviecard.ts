@@ -17,14 +17,14 @@ export class MovieCard implements OnInit {
 
   movieId = signal<number>(0);
 
-  selectedMovie = computed((): Movie => {
+  selectedMovie = computed<Movie | null>(() => {
     const id = this.movieId();
-
-    return this.movieService.movies().find((movie) => movie.id === id)!;
+    return this.movieService.movies().find((m) => m.id === id) ?? null;
   });
 
   selectedCrew = computed((): MovieCrew => {
     const id = this.movieId();
+
     return this.movieService.crew().find((crew) => crew.id === id)!;
   });
 
