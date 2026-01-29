@@ -3,8 +3,10 @@ import { ApiService } from './apirequest';
 import { environment } from '../../environment/environment';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
-import { forkJoin, Observable, of, tap } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { MovieCrewApi } from '../models/moviecrew-api';
+import { MovieCrew } from '../models/moviecrew';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +16,7 @@ export class MovieService {
 
   loading = signal<boolean>(false);
   movies = signal<Movie[]>([]);
+  crew = signal<MovieCrew[]>([]);
 
   private getRandomId(): number {
     return Math.floor(Math.random() * 1000) + 1;
@@ -23,11 +26,21 @@ export class MovieService {
     return `${environment.apiUrl}/movie/${id}`;
   }
 
+  private buildMovieCastUrl(id: number): string {
+    return `${environment.apiUrl}/movie/${id}/credits`;
+  }
+
   getRandomMovie(): Observable<Movie> {
     const id = this.getRandomId();
     const url = this.buildMovieUrl(id);
 
     return this.api.get<MovieApi>(url).pipe(map((api) => this.mapMovie(api)));
+  }
+
+  getMovieCrew(movieId: number): Observable<MovieCrew> {
+    const url = this.buildMovieCastUrl(movieId);
+
+    return this.api.get<MovieCrewApi>(url).pipe(map((api) => this.mapMovieCrew(api)));
   }
 
   private mapMovie(api: MovieApi): Movie {
@@ -47,6 +60,32 @@ export class MovieService {
       overview: api.overview,
       runtime: api.runtime,
       vote_average: api.vote_average,
+    };
+  }
+
+  private mapMovieCrew(api: MovieCrewApi): MovieCrew {
+    return {
+      id: api.id,
+      castName: api.cast
+        .slice(0, 10)
+        .map((n) => n.name)
+        .join(', '),
+      castPic: api.cast
+        .slice(0, 10)
+        .map((p) => p.profile_path)
+        .join(', '),
+      crewName: api.crew
+        .slice(0, 1)
+        .map((n) => n.name)
+        .join(', '),
+      crewPic: api.crew
+        .slice(0, 1)
+        .map((p) => p.profile_path)
+        .join(', '),
+      crewRole: api.crew
+        .slice(0, 1)
+        .map((r) => r.department)
+        .join(', '),
     };
   }
 
@@ -71,7 +110,13 @@ export class MovieService {
       .pipe(map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 15)))
       .subscribe((newMovies) => {
         this.movies.update((current) => [...current, ...newMovies]);
-        this.loading.set(false);
+
+        forkJoin(newMovies.map((movie) => this.getMovieCrew(movie.id)))
+          .pipe(map((crews) => crews as MovieCrew[]))
+          .subscribe((crew) => {
+            this.crew.update((current) => [...current, ...crew]);
+            this.loading.set(false);
+          });
       });
   }
 }

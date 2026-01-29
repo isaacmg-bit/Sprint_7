@@ -1,15 +1,8 @@
 export interface MovieCrew {
-  cast: [
-    {
-      name: string;
-      profile_path: string;
-    },
-  ];
-  crew: [
-    {
-      name: string;
-      profile_path: string;
-      department: string;
-    },
-  ];
+  id: number;
+  castName: string;
+  castPic: string;
+  crewName: string;
+  crewPic: string;
+  crewRole: string;
 }

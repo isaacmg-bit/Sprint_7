@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movieservice';
 import { Movie } from '../../models/movie';
+import { MovieCrew } from '../../models/moviecrew';
 
 @Component({
   selector: 'app-moviecard',
@@ -19,6 +20,11 @@ export class MovieCard implements OnInit {
     const id = this.movieId();
 
     return this.movieService.movies().find((movie) => movie.id === id)!;
+  });
+
+  selectedCrew = computed((): MovieCrew => {
+    const id = this.movieId();
+    return this.movieService.crew().find((crew) => crew.id === id)!;
   });
 
   ngOnInit(): void {
