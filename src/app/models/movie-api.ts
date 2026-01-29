@@ -1,5 +1,6 @@
 export interface MovieApi {
   backdrop_path: string;
+    poster_path: string;
   id: number;
   title: string;
   release_date: string;

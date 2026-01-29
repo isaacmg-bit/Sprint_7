@@ -1,16 +1,67 @@
 @if (selectedMovie()) {
-  <div class="mx-auto max-w-6xl px-4 py-4 space-y-4">
-    <a
-      class="block rounded-lg bg-white/5 px-6 py-4 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  <div class="flex justify-center items-stretch gap-4 px-4">
+    <div
+      class="flex w-auto h-206.25 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
-      <p class="text-lg font-semibold text-white">{{ selectedMovie()!.title }}</p>
-      <p class="text-sm text-gray-400">Release date: {{ selectedMovie()!.release_date }}</p>
-      <p class="text-sm text-gray-400">Genre: {{ selectedMovie()!.genresText }}</p>
-      <p class="text-sm text-gray-400">Country: {{ selectedMovie()!.origin_country }}</p>
-      <p class="text-sm text-gray-400">{{ selectedMovie()!.overview }}</p>
-      <p class="text-sm text-gray-400">Runtime: {{ selectedMovie()!.runtime }}</p>
-      <p class="text-sm text-gray-400">User score: {{ selectedMovie()!.vote_average }}</p>
-      <img src="https://image.tmdb.org/t/p/w780/{{ selectedMovie()!.backdrop_path }}" alt="" />
-    </a>
+      <img
+        class="object-cover h-full"
+        src="https://image.tmdb.org/t/p/w780/{{ selectedMovie()!.poster_path }}"
+        alt=""
+      />
+    </div>
+
+    <div
+      class="flex h-206.25 max-w-6xl px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 overflow-y-auto"
+    >
+      <dl
+        class="-my-3 divide-y divide-gray-200 text-sm *:even:bg-gray-50 dark:divide-gray-700 dark:*:even:bg-gray-800"
+      >
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Title</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.title }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Genre</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.genresText }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Country</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.origin_country }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Runtime</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.runtime }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">User score</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.vote_average.toFixed(1) }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Overview</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ selectedMovie()!.overview }}
+          </dd>
+        </div>
+
+        <div class="flex mt-10 justify-center">
+          <img src="https://image.tmdb.org/t/p/w780/{{ selectedMovie()!.backdrop_path }}" alt="" />
+        </div>
+      </dl>
+    </div>
   </div>
 }

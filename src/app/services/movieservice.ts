@@ -37,6 +37,7 @@ export class MovieService {
 
     return {
       backdrop_path: api.backdrop_path,
+      poster_path: api.poster_path,
       id: api.id,
       title: api.title,
       release_date: api.release_date,
