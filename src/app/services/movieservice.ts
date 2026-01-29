@@ -64,28 +64,28 @@ export class MovieService {
   }
 
   private mapMovieCrew(api: MovieCrewApi): MovieCrew {
+    const director = api.crew.find((person) => person.job === 'Director');
+
     return {
       id: api.id,
       castName: api.cast
         .slice(0, 10)
         .map((n) => n.name)
         .join(', '),
+      castCharacter: api.cast
+        .slice(0, 10)
+        .map((n) => n.character)
+        .join(', '),
       castPic: api.cast
         .slice(0, 10)
-        .map((p) => p.profile_path)
+        .map((p) => (p.profile_path ? `https://image.tmdb.org/t/p/w185${p.profile_path}` : ''))
         .join(', '),
-      crewName: api.crew
-        .slice(0, 1)
-        .map((n) => n.name)
-        .join(', '),
-      crewPic: api.crew
-        .slice(0, 1)
-        .map((p) => p.profile_path)
-        .join(', '),
-      crewRole: api.crew
-        .slice(0, 1)
-        .map((r) => r.department)
-        .join(', '),
+
+      crewName: director?.name || '',
+      crewPic: director?.profile_path
+        ? `https://image.tmdb.org/t/p/w185${director.profile_path}`
+        : '',
+      crewRole: director?.job || '',
     };
   }
 

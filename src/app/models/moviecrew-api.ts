@@ -4,13 +4,14 @@ export interface MovieCrewApi {
     {
       name: string;
       profile_path: string;
+      character: string;
     },
   ];
   crew: [
     {
       name: string;
       profile_path: string;
-      department: string;
+      job: string;
     },
   ];
 }

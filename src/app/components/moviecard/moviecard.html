@@ -1,7 +1,7 @@
 @if (selectedMovie()) {
-  <div class="flex justify-center items-stretch gap-4 px-4">
+  <div class="flex flex-wrap justify-center items-stretch gap-4 px-4">
     <div
-      class="flex w-auto h-206 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+      class="xl:flex w-auto h-240 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
       <img
         class="object-cover h-full"
@@ -11,10 +11,10 @@
     </div>
 
     <div
-      class="flex h-206 max-w-6xl px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 overflow-y-auto"
+      class="flex h-auto w-full xl:max-w-6xl px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
       <dl
-        class="-my-3 divide-y divide-gray-200 text-sm *:even:bg-gray-50 dark:divide-gray-700 dark:*:even:bg-gray-800"
+        class="divide-y divide-gray-200 text-sm *:even:bg-gray-50 dark:divide-gray-700 dark:*:even:bg-gray-800 w-full"
       >
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Title</dt>
@@ -50,12 +50,14 @@
             {{ selectedCrew()!.crewName }}
           </dd>
         </div>
+
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
             {{ selectedCrew()!.castName }}
           </dd>
         </div>
+
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">User score</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
@@ -75,14 +77,65 @@
         </div>
       </dl>
     </div>
+
     <div
-      class="flex w-auto h-206 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+      class="hidden xl:flex flex-wrap gap-4 w-184 h-240 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 overflow-y-auto"
     >
-      <img
-        class="object-cover h-50"
-        src="https://image.tmdb.org/t/p/w780/{{ selectedCrew()!.crewPic }}"
-        alt=""
-      />
+      <div class="basis-full text-center">
+        <img
+          class="object-cover h-50 rounded mx-auto"
+          src="{{ selectedCrew()!.crewPic }}"
+          alt="Director"
+        />
+        <p class="text-sm text-gray-200 mt-2">{{ selectedCrew()!.crewName }}</p>
+        <p class="text-xs text-gray-400">{{ selectedCrew()!.crewRole }}</p>
+      </div>
+
+      @for (actor of selectedCrew()!.castName.split(', ').slice(0, 10); track $index) {
+        @if (selectedCrew()!.castPic.split(', ')[$index]) {
+          <div class="text-center">
+            <img
+              class="object-cover h-50 w-32 rounded"
+              [src]="selectedCrew()!.castPic.split(', ')[$index]"
+              alt="{{ actor }}"
+            />
+            <p class="text-xs text-gray-200 mt-1 w-32">{{ actor }}</p>
+            <p class="text-xs text-gray-400">
+              {{ selectedCrew()!.castCharacter.split(', ')[$index] }}
+            </p>
+          </div>
+        }
+      }
+    </div>
+
+    <div
+      class="flex xl:hidden flex-wrap justify-center gap-4 w-full px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+    >
+      <div class="basis-full text-center">
+        <img
+          class="object-cover h-50 rounded mx-auto"
+          src="{{ selectedCrew()!.crewPic }}"
+          alt="Director"
+        />
+        <p class="text-sm text-gray-200 mt-2">{{ selectedCrew()!.crewName }}</p>
+        <p class="text-xs text-gray-400">{{ selectedCrew()!.crewRole }}</p>
+      </div>
+
+      @for (actor of selectedCrew()!.castName.split(', ').slice(0, 10); track $index) {
+        @if (selectedCrew()!.castPic.split(', ')[$index]) {
+          <div class="text-center">
+            <img
+              class="object-cover h-50 w-32 rounded"
+              [src]="selectedCrew()!.castPic.split(', ')[$index]"
+              alt="{{ actor }}"
+            />
+            <p class="text-xs text-gray-200 mt-1 w-32">{{ actor }}</p>
+            <p class="text-xs text-gray-400">
+              {{ selectedCrew()!.castCharacter.split(', ')[$index] }}
+            </p>
+          </div>
+        }
+      }
     </div>
   </div>
 }
