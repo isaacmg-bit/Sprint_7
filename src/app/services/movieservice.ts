@@ -13,6 +13,7 @@ import { MovieCrew } from '../models/moviecrew';
 })
 export class MovieService {
   private api = inject(ApiService);
+  private initialized = false;
 
   loading = signal<boolean>(false);
   movies = signal<Movie[]>([]);
@@ -96,6 +97,13 @@ export class MovieService {
         : '',
       crewRole: director?.job || '',
     };
+  }
+
+  initMovies(): void {
+    if (this.initialized) return;
+
+    this.initialized = true;
+    this.fetchMovies();
   }
 
   fetchMovies(): void {

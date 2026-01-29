@@ -13,7 +13,7 @@ export class Movies implements OnInit {
   movieService = inject(MovieService);
 
   ngOnInit(): void {
-    this.movieService.fetchMovies();
+    this.movieService.initMovies();
   }
   onScroll(): void {
     this.movieService.fetchMovies();
