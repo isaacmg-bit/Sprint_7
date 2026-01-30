@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MovieService } from '../../services/movieservice';
 import { RouterModule } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
@@ -9,12 +9,13 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
   templateUrl: './movies.html',
   styleUrl: './movies.css',
 })
-export class Movies implements OnInit {
-  movieService = inject(MovieService);
+export class Movies {
+  readonly movieService = inject(MovieService);
 
-  ngOnInit(): void {
+  constructor() {
     this.movieService.initMovies();
   }
+
   onScroll(): void {
     this.movieService.fetchMovies();
   }

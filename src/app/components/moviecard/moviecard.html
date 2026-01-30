@@ -1,9 +1,9 @@
-@if (selectedMovie()) {
-  <div class="flex flex-wrap justify-center items-stretch gap-4 px-4">
+@if (selectedMovie(); as movie) {
+  <div class="flex flex-wrap justify-center items-stretch gap-4 px-4 pb-8">
     <div
       class="xl:flex w-auto h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
-      <img class="object-cover h-full" [src]="selectedMovie()?.posterUrl" alt="" />
+      <img class="object-cover h-full" [src]="movie.posterUrl" [alt]="movie.title" />
     </div>
 
     <div
@@ -15,66 +15,71 @@
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Title</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.title }}
+            {{ movie.title }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Genre</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.genresText }}
+            {{ movie.genresText }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Country</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.origin_country }}
+            {{ movie.origin_country }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Runtime</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.runtime }}
+            {{ movie.runtime }} minutes
           </dd>
         </div>
 
-        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
-          <dt class="font-medium text-gray-900 dark:text-white">Director</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedCrew()!.crewName }}
-          </dd>
-        </div>
+        @if (selectedCrew(); as crew) {
+          <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900 dark:text-white">Director</dt>
+            <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+              {{ crew.crewName }}
+            </dd>
+          </div>
 
-        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
-          <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            @for (actor of selectedCrew()!.cast.slice(0, 10); track actor.id) {
-              <p>{{ actor.name }}</p>
-            }
-          </dd>
-        </div>
+          <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
+            <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+              @for (actor of crew.cast.slice(0, 10); track actor.id) {
+                <p>{{ actor.name }}</p>
+              }
+            </dd>
+          </div>
+        }
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">User score</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.vote_average.toFixed(1) }}
+            {{ movie.vote_average.toFixed(1) }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Overview</dt>
           <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-            {{ selectedMovie()!.overview }}
+            {{ movie.overview }}
           </dd>
         </div>
 
         <div class="flex mt-10 justify-center">
-          <img class="object-cover h-full" [src]="selectedMovie()?.backdropUrl" alt="" />
+          <img class="object-cover h-full" [src]="movie.backdropUrl" [alt]="movie.title" />
         </div>
       </dl>
     </div>
-    <app-actorcard [crew]="selectedCrew()"></app-actorcard>
+
+    @if (selectedCrew(); as crew) {
+      <app-actorcard [crew]="crew"></app-actorcard>
+    }
   </div>
 }
