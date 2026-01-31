@@ -39,7 +39,12 @@ export class Login implements OnInit {
         .login(formData)
         .then((response) => {
           console.log(response);
-          this.router.navigate(['/home']);
+
+          if (this.fromMovies()) {
+            this.router.navigate(['/movies']);
+          } else {
+            this.router.navigate(['/home']);
+          }
         })
         .catch((error) => console.log(error));
     }
