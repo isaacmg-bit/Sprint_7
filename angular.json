@@ -9,7 +9,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "Sprint_7": {
+    "sprint-7": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Sprint_7:build:production"
+              "buildTarget": "sprint-7:build:production"
             },
             "development": {
-              "buildTarget": "Sprint_7:build:development"
+              "buildTarget": "sprint-7:build:development"
             }
           },
           "defaultConfiguration": "development"

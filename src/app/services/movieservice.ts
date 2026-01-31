@@ -1,12 +1,13 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiService } from './apirequest';
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environment';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MovieCrewApi } from '../models/moviecrew-api';
 import { MovieCrew } from '../models/moviecrew';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -70,8 +71,12 @@ export class MovieService {
     return {
       id: api.id,
       title: api.title,
-      posterUrl: api.poster_path ? `${this.imageBaseMovie}${api.poster_path}` : this.posterImageNotAvailable,
-      backdropUrl: api.backdrop_path ? `${this.imageBaseMovie}${api.backdrop_path}` : this.backdropImageNotAvailable,
+      posterUrl: api.poster_path
+        ? `${this.imageBaseMovie}${api.poster_path}`
+        : this.posterImageNotAvailable,
+      backdropUrl: api.backdrop_path
+        ? `${this.imageBaseMovie}${api.backdrop_path}`
+        : this.backdropImageNotAvailable,
       release_date: api.release_date,
       adult: api.adult,
       genresText: api.genres.map((g) => g.name).join(', '),
@@ -91,15 +96,19 @@ export class MovieService {
         id: actor.id,
         name: actor.name,
         character: actor.character,
-        pic: actor.profile_path ? `${this.imageBaseCrew}${actor.profile_path}` : this.actorImageNotAvailable,
+        pic: actor.profile_path
+          ? `${this.imageBaseCrew}${actor.profile_path}`
+          : this.actorImageNotAvailable,
       })),
       crewName: director?.name || '',
-      crewPic: director?.profile_path ? `${this.imageBaseCrew}${director.profile_path}` : this.actorImageNotAvailable,
+      crewPic: director?.profile_path
+        ? `${this.imageBaseCrew}${director.profile_path}`
+        : this.actorImageNotAvailable,
       crewRole: director?.job || '',
     };
   }
 
-  private handleMovieError(error: any): Observable<Movie | null> {
+  private handleMovieError(error: HttpErrorResponse): Observable<Movie | null> {
     if (error.status === 404) {
       console.warn('Movie not found, skipping...');
       return of(null);
