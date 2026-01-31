@@ -25,6 +25,17 @@
             class="w-full px-4 py-3 rounded-lg bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             placeholder="Enter your email"
           />
+          <p class="text-red-600 mt-1">
+            @if (email?.touched && email?.hasError('required')) {
+              Email is required.
+            }
+          </p>
+
+          <p class="text-red-600 mt-1">
+            @if ((email?.touched || email?.dirty) && email?.hasError('pattern')) {
+              Please enter a valid email address.
+            }
+          </p>
         </div>
 
         <div>
@@ -38,6 +49,17 @@
             class="w-full px-4 py-3 rounded-lg bg-white/5 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             placeholder="Enter your password"
           />
+          <p class="text-red-600 mt-1">
+            @if (password?.touched && password?.hasError('required')) {
+              Password is required.
+            }
+          </p>
+
+          <p class="text-red-600 mt-1">
+            @if ((password?.touched || password?.dirty) && password?.hasError('minlength')) {
+              Password must be at least 6 characters long.
+            }
+          </p>
         </div>
 
         <button

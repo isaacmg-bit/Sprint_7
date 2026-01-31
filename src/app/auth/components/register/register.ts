@@ -14,7 +14,10 @@ export class Register {
   private Router = inject(Router);
 
   formReg = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/),
+    ]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
@@ -33,5 +36,12 @@ export class Register {
         })
         .catch((error) => console.log(error));
     }
+  }
+
+  get password() {
+    return this.formReg.get('password');
+  }
+  get email() {
+    return this.formReg.get('email');
   }
 }

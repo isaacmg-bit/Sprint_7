@@ -24,7 +24,10 @@ export class Login implements OnInit {
   }
 
   formLog = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/),
+    ]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
@@ -48,5 +51,12 @@ export class Login implements OnInit {
         })
         .catch((error) => console.log(error));
     }
+  }
+
+  get password() {
+    return this.formLog.get('password');
+  }
+  get email() {
+    return this.formLog.get('email');
   }
 }
