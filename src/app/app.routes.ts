@@ -4,6 +4,7 @@ import { Movies } from './components/movies/movies';
 import { MovieCard } from './components/moviecard/moviecard';
 import { Register } from './auth/components/register/register';
 import { Login } from './auth/components/login/login';
+import { authGuard } from './auth/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -18,10 +19,12 @@ export const routes: Routes = [
   {
     path: 'movies',
     component: Movies,
+    canActivate: [authGuard],
   },
   {
     path: 'moviecard/:id',
     component: MovieCard,
+    canActivate: [authGuard],
   },
   {
     path: 'register',

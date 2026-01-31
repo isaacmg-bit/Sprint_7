@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/authservice';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +9,19 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
   private userService = inject(AuthService);
-  private Router = inject(Router);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  fromMovies = signal(false);
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['from'] === 'movies') {
+        this.fromMovies.set(true);
+      }
+    });
+  }
 
   formLog = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -29,7 +39,7 @@ export class Login {
         .login(formData)
         .then((response) => {
           console.log(response);
-          this.Router.navigate(['/home']);
+          this.router.navigate(['/home']);
         })
         .catch((error) => console.log(error));
     }

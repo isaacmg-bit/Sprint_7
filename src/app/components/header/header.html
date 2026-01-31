@@ -1,5 +1,7 @@
 <header aria-label="Main header">
-  <div class="max-w-7xl mx-auto px-4 py-5 relative flex items-center justify-center">
+  <div class="max-w-7xl mx-auto px-4 py-5 relative flex items-center justify-between">
+    <div class="flex-1"></div>
+
     <a
       routerLink="/home"
       class="flex justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -11,5 +13,21 @@
         class="w-64 h-auto cursor-pointer"
       />
     </a>
+
+    <div class="flex-1 flex justify-end items-center gap-4">
+      <span class="text-sm text-gray-400">
+        Hello <span class="text-white font-semibold">{{ userEmail() || 'Guest' }}</span
+        >!
+      </span>
+      @if (userEmail()) {
+        <button
+          (click)="logout()"
+          class="px-4 py-2 text-sm font-semibold uppercase tracking-widest text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Logout"
+        >
+          Logout
+        </button>
+      }
+    </div>
   </div>
 </header>

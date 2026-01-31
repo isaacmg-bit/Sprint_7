@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   UserCredential,
+  signOut,
 } from '@angular/fire/auth';
 import { UserData } from '../../models/auth';
 
@@ -11,7 +12,7 @@ import { UserData } from '../../models/auth';
   providedIn: 'root',
 })
 export class AuthService {
-  auth = inject(Auth);
+  private auth = inject(Auth);
 
   register({ email, password }: UserData): Promise<UserCredential> {
     return createUserWithEmailAndPassword(this.auth, email, password);
@@ -19,5 +20,9 @@ export class AuthService {
 
   login({ email, password }: UserData): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  logout() {
+    return signOut(this.auth);
   }
 }

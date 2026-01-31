@@ -5,8 +5,8 @@
         <a
           routerLink="/home"
           routerLinkActive="bg-white/10 ring-2 ring-blue-500"
-          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          aria-label="Go to Home page"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10"
         >
           Home
         </a>
@@ -16,7 +16,8 @@
         <a
           routerLink="/movies"
           routerLinkActive="bg-white/10 ring-2 ring-blue-500"
-          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10"
           aria-label="Go to Movies page"
         >
           Movies
@@ -26,14 +27,18 @@
       <li class="w-full flex justify-center gap-4 mt-2 xl:mt-0 xl:w-auto xl:flex-none">
         <a
           routerLink="/login"
-          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          routerLinkActive="bg-white/10 ring-2 ring-blue-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10"
           aria-label="Login"
         >
           LOGIN
         </a>
         <a
           routerLink="/register"
-          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          routerLinkActive="bg-white/10 ring-2 ring-blue-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="px-6 py-4 min-w-30 text-center inline-flex items-center justify-center text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10"
           aria-label="Register"
         >
           REGISTER
