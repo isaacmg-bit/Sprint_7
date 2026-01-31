@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiService } from './apirequest';
-import { environmentlocal } from '../../environments/environment';
+import { environment } from '../../environments/environment.local';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
 import { forkJoin, Observable, of } from 'rxjs';
@@ -33,11 +33,11 @@ export class MovieService {
   }
 
   private buildMovieUrl(id: number): string {
-    return `${environmentlocal.apiUrl}/movie/${id}`;
+    return `${environment.apiUrl}/movie/${id}`;
   }
 
   private buildMovieCastUrl(id: number): string {
-    return `${environmentlocal.apiUrl}/movie/${id}/credits`;
+    return `${environment.apiUrl}/movie/${id}/credits`;
   }
 
   private getRandomMovie(): Observable<Movie> {
