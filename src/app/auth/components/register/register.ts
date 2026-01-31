@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
-import { User } from '../../services/user';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/authservice';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,8 @@ import { User } from '../../services/user';
   styleUrl: './register.css',
 })
 export class Register {
-  private userService = inject(User);
+  private userService = inject(AuthService);
+  private Router = inject(Router);
 
   formReg = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -17,11 +19,19 @@ export class Register {
   });
 
   onSubmit() {
-    this.userService
-      .register(this.formReg.value)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => console.log(error));
+    if (this.formReg.valid) {
+      const formData = {
+        email: this.formReg.value.email || '',
+        password: this.formReg.value.password || '',
+      };
+
+      this.userService
+        .register(formData)
+        .then((response) => {
+          console.log(response);
+          this.Router.navigate(['/login']);
+        })
+        .catch((error) => console.log(error));
+    }
   }
 }
