@@ -1,12 +1,16 @@
 @if (selectedMovie(); as movie) {
   <div class="flex flex-wrap justify-center items-stretch gap-4 px-4 pb-8">
     <figure
-      class="xl:flex w-auto h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+      class="flex flex-col xl:flex-row w-full xl:w-auto h-auto xl:h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
       tabindex="0"
       role="group"
       [attr.aria-label]="'Poster of ' + movie.title"
     >
-      <img class="object-cover h-full" [src]="movie.posterUrl" [alt]="'Poster of ' + movie.title" />
+      <img
+        class="w-full xl:w-auto h-auto xl:h-full object-cover rounded"
+        [src]="movie.posterUrl"
+        [alt]="'Poster of ' + movie.title"
+      />
     </figure>
 
     <div
