@@ -37,7 +37,7 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
-src/environments/environment.local.ts
+src/environments/environmentlocal.ts
 
 
 # System files
