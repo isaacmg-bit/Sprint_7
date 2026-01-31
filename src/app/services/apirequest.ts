@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environmentlocal } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class ApiService {
   private readonly http = inject(HttpClient);
 
   private readonly headers = new HttpHeaders({
-    Authorization: `Bearer ${environment.apiToken}`,
+    Authorization: `Bearer ${environmentlocal.apiToken}`,
   });
 
   get<T>(url: string): Observable<T> {

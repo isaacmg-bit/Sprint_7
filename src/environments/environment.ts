@@ -1,4 +1,4 @@
-export const environment = {
+export const environmentlocal = {
   production: false,
   apiToken: '',
   apiUrl: 'https://api.themoviedb.org/3/',
