@@ -2,30 +2,41 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Movies } from './movies';
 import { provideRouter } from '@angular/router';
 import { MovieService } from '../../services/movieservice';
-import { vi } from 'vitest';
 import { signal } from '@angular/core';
 
 describe('Movies', () => {
   let component: Movies;
   let fixture: ComponentFixture<Movies>;
-  let mockMovieService: any;
+
+  const mockMovies = [
+    {
+      id: 5,
+      title: '',
+      posterUrl: '',
+      backdropUrl: '',
+      release_date: '',
+      adult: false,
+      genresText: '',
+      origin_country: [''],
+      overview: '',
+      runtime: 120,
+      vote_average: 8.5,
+    },
+  ];
+
+  const movieServiceMock = {
+    initMovies: vi.fn(),
+    fetchMovies: vi.fn(),
+    movies: () => mockMovies,
+    loading: signal(false),
+    getDirectorByMovieId: vi.fn().mockReturnValue('Director Name'),
+    getPosterByMovieId: vi.fn().mockReturnValue('poster-path.jpg'),
+  };
 
   beforeEach(async () => {
-    mockMovieService = {
-      initMovies: vi.fn(),
-      fetchMovies: vi.fn(),
-      movies: signal([
-        { id: 1, title: 'Movie 1', release_date: '2024-01-01' },
-        { id: 2, title: 'Movie 2', release_date: '2023-06-15' },
-      ]),
-      loading: signal(false),
-      getDirectorByMovieId: vi.fn().mockReturnValue('Director Name'),
-      getPosterByMovieId: vi.fn().mockReturnValue('poster-path.jpg'),
-    };
-
     await TestBed.configureTestingModule({
       imports: [Movies],
-      providers: [{ provide: MovieService, useValue: mockMovieService }, provideRouter([])],
+      providers: [{ provide: MovieService, useValue: movieServiceMock }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Movies);
@@ -42,12 +53,12 @@ describe('Movies', () => {
   });
 
   it('should call initMovies on constructor', () => {
-    expect(mockMovieService.initMovies).toHaveBeenCalled();
+    expect(movieServiceMock.initMovies).toHaveBeenCalled();
   });
 
   it('should call fetchMovies on scroll', () => {
     component.onScroll();
 
-    expect(mockMovieService.fetchMovies).toHaveBeenCalled();
+    expect(movieServiceMock.fetchMovies).toHaveBeenCalled();
   });
 });

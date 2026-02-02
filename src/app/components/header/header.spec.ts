@@ -3,13 +3,12 @@ import { Auth } from '@angular/fire/auth';
 import { Header } from './header';
 import { provideRouter, Router } from '@angular/router';
 import { AuthService } from '../../auth/services/authservice';
-import { vi } from 'vitest';
 
 describe('Header', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
   let mockRouter: Router;
-  let mockAuthService: any;
+  let mockAuthService: Partial<AuthService>;
 
   beforeEach(async () => {
     const mockAuth = {

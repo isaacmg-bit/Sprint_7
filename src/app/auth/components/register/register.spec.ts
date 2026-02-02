@@ -2,13 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Register } from './register';
 import { AuthService } from '../../services/authservice';
 import { Router } from '@angular/router';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('Register', () => {
   let component: Register;
   let fixture: ComponentFixture<Register>;
   let mockAuthService: any;
-  let mockRouter: any;
+  let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
     mockAuthService = {

@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Login } from './login';
 import { AuthService } from '../../services/authservice';
 import { Router } from '@angular/router';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -10,7 +9,7 @@ describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   let mockAuthService: any;
-  let mockRouter: any;
+  let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
     mockAuthService = {
