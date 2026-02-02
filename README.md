@@ -45,6 +45,7 @@ The application provides an interface for browsing movies, viewing detailed info
 - Node.js v24.13.0 LTS
 - Angular 21.1.2
 - Firebase 11.2.0
+- AngularFire 21.0.0 RC
 - RxJS for reactive programming
 - TMDB API for movie data
 
