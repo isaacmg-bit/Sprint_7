@@ -1,3 +1,13 @@
-<div class="flex justify-center">
-  <img src="/assets/img/home.png" alt="Home" class="w-lg mt-8" />
-</div>
+<section
+  aria-label="Home and news section"
+  class="flex flex-col xl:flex-row justify-center items-center gap-8 mt-8"
+>
+  <div tabindex="0" class="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
+    <img src="/assets/img/home.png" alt="Home section illustration" class="w-lg" />
+  </div>
+
+  <app-news
+    tabindex="0"
+    class="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+  ></app-news>
+</section>

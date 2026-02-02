@@ -1,33 +1,66 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiService } from './apirequest';
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environmentlocal';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { forkJoin, Observable, of, tap } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { MovieCrewApi } from '../models/moviecrew-api';
+import { MovieCrew } from '../models/moviecrew';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  private api = inject(ApiService);
+  private readonly api = inject(ApiService);
+  private readonly imageBaseMovie = 'https://image.tmdb.org/t/p/w780';
+  private readonly imageBaseCrew = 'https://image.tmdb.org/t/p/w185';
+  private readonly actorImageNotAvailable = 'assets/img/actornotavailable.png';
+  private readonly posterImageNotAvailable = 'assets/img/posternotavailable.png';
+  private readonly backdropImageNotAvailable = 'assets/img/backdropnotavailable.png';
+  private readonly moviesPerBatch = 30;
+  private readonly moviesToKeep = 15;
 
-  loading = signal(true);
+  private initialized = false;
+
+  readonly loading = signal<boolean>(false);
+  readonly movies = signal<Movie[]>([]);
+  readonly crew = signal<MovieCrew[]>([]);
 
   private getRandomId(): number {
-    return Math.floor(Math.random() * 250) + 1;
+    return Math.floor(Math.random() * 1000) + 1;
   }
 
   private buildMovieUrl(id: number): string {
     return `${environment.apiUrl}/movie/${id}`;
   }
 
-  getRandomMovie(): Observable<Movie> {
+  private buildMovieCastUrl(id: number): string {
+    return `${environment.apiUrl}/movie/${id}/credits`;
+  }
+
+  private getRandomMovie(): Observable<Movie> {
     const id = this.getRandomId();
     const url = this.buildMovieUrl(id);
 
     return this.api.get<MovieApi>(url).pipe(map((api) => this.mapMovie(api)));
+  }
+
+  private getMovieCrew(movieId: number): Observable<MovieCrew> {
+    const url = this.buildMovieCastUrl(movieId);
+
+    return this.api.get<MovieCrewApi>(url).pipe(map((api) => this.mapMovieCrew(api)));
+  }
+
+  getDirectorByMovieId(movieId: number): string {
+    const crew = this.crew().find((c) => c.id === movieId);
+    return crew?.crewName || 'Unknown';
+  }
+
+  getPosterByMovieId(movieId: number): string {
+    const poster = this.movies().find((p) => p.id === movieId);
+    return poster?.posterUrl || 'Unknown';
   }
 
   private mapMovie(api: MovieApi): Movie {
@@ -36,9 +69,14 @@ export class MovieService {
     }
 
     return {
-      backdrop_path: api.backdrop_path,
       id: api.id,
       title: api.title,
+      posterUrl: api.poster_path
+        ? `${this.imageBaseMovie}${api.poster_path}`
+        : this.posterImageNotAvailable,
+      backdropUrl: api.backdrop_path
+        ? `${this.imageBaseMovie}${api.backdrop_path}`
+        : this.backdropImageNotAvailable,
       release_date: api.release_date,
       adult: api.adult,
       genresText: api.genres.map((g) => g.name).join(', '),
@@ -49,24 +87,68 @@ export class MovieService {
     };
   }
 
-  movies = toSignal(
-    forkJoin(
-      Array.from({ length: 20 }, () =>
-        this.getRandomMovie().pipe(
-          catchError((error) => {
-            if (error.status === 404) {
-              console.warn('Movie not found, skipping...');
-              return of(null);
-            }
-            console.error('Error fetching movie', error);
-            return of(null);
-          }),
+  private mapMovieCrew(api: MovieCrewApi): MovieCrew {
+    const director = api.crew.find((p) => p.job === 'Director');
+
+    return {
+      id: api.id,
+      cast: api.cast.slice(0, 10).map((actor) => ({
+        id: actor.id,
+        name: actor.name,
+        character: actor.character,
+        pic: actor.profile_path
+          ? `${this.imageBaseCrew}${actor.profile_path}`
+          : this.actorImageNotAvailable,
+      })),
+      crewName: director?.name || '',
+      crewPic: director?.profile_path
+        ? `${this.imageBaseCrew}${director.profile_path}`
+        : this.actorImageNotAvailable,
+      crewRole: director?.job || '',
+    };
+  }
+
+  private handleMovieError(error: HttpErrorResponse): Observable<Movie | null> {
+    if (error.status === 404) {
+      console.warn('Movie not found, skipping...');
+      return of(null);
+    }
+    console.error('Error fetching movie', error);
+    return of(null);
+  }
+
+  initMovies(): void {
+    if (this.initialized) return;
+
+    this.initialized = true;
+    this.fetchMovies();
+  }
+
+  fetchMovies(): void {
+    if (this.loading()) return;
+    this.loading.set(true);
+
+    const movieRequests = Array.from({ length: this.moviesPerBatch }, () =>
+      this.getRandomMovie().pipe(catchError((error) => this.handleMovieError(error))),
+    );
+
+    forkJoin(movieRequests)
+      .pipe(
+        map((movies): Movie[] =>
+          movies.filter((m): m is Movie => m !== null).slice(0, this.moviesToKeep),
         ),
-      ),
-    ).pipe(
-      map((movies): Movie[] => movies.filter((m): m is Movie => m !== null).slice(0, 10)),
-      tap(() => this.loading.set(false)),
-    ),
-    { initialValue: [] },
-  );
+      )
+      .subscribe((newMovies) => {
+        this.movies.update((current) => [...current, ...newMovies]);
+
+        const crewRequests = newMovies.map((movie) => this.getMovieCrew(movie.id));
+
+        forkJoin(crewRequests)
+          .pipe(map((crews) => crews as MovieCrew[]))
+          .subscribe((crew) => {
+            this.crew.update((current) => [...current, ...crew]);
+            this.loading.set(false);
+          });
+      });
+  }
 }
