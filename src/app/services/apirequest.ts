@@ -7,15 +7,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private headers = new HttpHeaders({
+  private readonly headers = new HttpHeaders({
     Authorization: `Bearer ${environment.apiToken}`,
   });
 
   get<T>(url: string): Observable<T> {
-    return this.http.get<T>(url, {
-      headers: this.headers,
-    });
+    return this.http.get<T>(url, { headers: this.headers });
   }
 }

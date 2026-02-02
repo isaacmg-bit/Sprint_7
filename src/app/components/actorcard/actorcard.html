@@ -1,0 +1,19 @@
+<div
+  class="flex flex-wrap justify-center gap-4 w-full xl:w-200 xl:h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 xl:overflow-y-auto"
+>
+  <div class="basis-full text-center">
+    <img class="object-cover h-50 rounded mx-auto" [src]="crew().crewPic" alt="Director" />
+    <p class="text-sm text-gray-200 mt-2">{{ crew().crewName }}</p>
+    <p class="text-xs text-gray-400">{{ crew().crewRole }}</p>
+  </div>
+
+  @for (actor of crew().cast; track actor.id) {
+    @if (actor.pic) {
+      <div class="text-center">
+        <img class="object-cover h-50 w-32 rounded" [src]="actor.pic" [alt]="actor.name" />
+        <p class="text-xs text-gray-200 mt-1 w-32">{{ actor.name }}</p>
+        <p class="text-xs text-gray-400 wrap-break-word w-32">{{ actor.character }}</p>
+      </div>
+    }
+  }
+</div>

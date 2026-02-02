@@ -1,16 +1,85 @@
-@if (selectedMovie()) {
-  <div class="mx-auto max-w-6xl px-4 py-4 space-y-4">
-    <a
-      class="block rounded-lg bg-white/5 px-6 py-4 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+@if (selectedMovie(); as movie) {
+  <div class="flex flex-wrap justify-center items-stretch gap-4 px-4 pb-8">
+    <div
+      class="xl:flex w-auto h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
     >
-      <p class="text-lg font-semibold text-white">{{ selectedMovie()!.title }}</p>
-      <p class="text-sm text-gray-400">Release date: {{ selectedMovie()!.release_date }}</p>
-      <p class="text-sm text-gray-400">Genre: {{ selectedMovie()!.genresText }}</p>
-      <p class="text-sm text-gray-400">Country: {{ selectedMovie()!.origin_country }}</p>
-      <p class="text-sm text-gray-400">{{ selectedMovie()!.overview }}</p>
-      <p class="text-sm text-gray-400">Runtime: {{ selectedMovie()!.runtime }}</p>
-      <p class="text-sm text-gray-400">User score: {{ selectedMovie()!.vote_average }}</p>
-      <img src="https://image.tmdb.org/t/p/w780/{{ selectedMovie()!.backdrop_path }}" alt="" />
-    </a>
+      <img class="object-cover h-full" [src]="movie.posterUrl" [alt]="movie.title" />
+    </div>
+
+    <div
+      class="flex h-auto w-full xl:max-w-6xl px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+    >
+      <dl
+        class="divide-y divide-gray-200 text-sm *:even:bg-gray-50 dark:divide-gray-700 dark:*:even:bg-gray-800 w-full"
+      >
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Title</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.title }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Genre</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.genresText }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Country</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.origin_country }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Runtime</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.runtime }} minutes
+          </dd>
+        </div>
+
+        @if (selectedCrew(); as crew) {
+          <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900 dark:text-white">Director</dt>
+            <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+              {{ crew.crewName }}
+            </dd>
+          </div>
+
+          <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
+            <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+              @for (actor of crew.cast.slice(0, 10); track actor.id) {
+                <p>{{ actor.name }}</p>
+              }
+            </dd>
+          </div>
+        }
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">User score</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.vote_average.toFixed(1) }}
+          </dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+          <dt class="font-medium text-gray-900 dark:text-white">Overview</dt>
+          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            {{ movie.overview }}
+          </dd>
+        </div>
+
+        <div class="flex mt-10 justify-center">
+          <img class="object-cover h-full" [src]="movie.backdropUrl" [alt]="movie.title" />
+        </div>
+      </dl>
+    </div>
+
+    @if (selectedCrew(); as crew) {
+      <app-actorcard [crew]="crew"></app-actorcard>
+    }
   </div>
 }

@@ -1,29 +1,33 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { MovieService } from '../../services/movieservice';
 import { Movie } from '../../models/movie';
+import { MovieCrew } from '../../models/moviecrew';
+import { ActorCard } from '../actorcard/actorcard';
 
 @Component({
   selector: 'app-moviecard',
-  imports: [],
+  imports: [ActorCard],
   templateUrl: './moviecard.html',
   styleUrl: './moviecard.css',
 })
-export class MovieCard implements OnInit {
+export class MovieCard {
   private readonly route = inject(ActivatedRoute);
-  readonly movieService = inject(MovieService);
+  private readonly movieService = inject(MovieService);
 
-  movieId = signal<number>(0);
-
-  selectedMovie = computed((): Movie => {
-    const id = this.movieId();
-
-    return this.movieService.movies().find((movie) => movie.id === id)!;
+  private readonly movieId = toSignal(this.route.params.pipe(map((params) => +params['id'])), {
+    initialValue: 0,
   });
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.movieId.set(+params['id']);
-    });
-  }
+  readonly selectedMovie = computed<Movie | null>(() => {
+    const id = this.movieId();
+    return this.movieService.movies().find((m) => m.id === id) ?? null;
+  });
+
+  readonly selectedCrew = computed<MovieCrew | undefined>(() => {
+    const id = this.movieId();
+    return this.movieService.crew().find((crew) => crew.id === id);
+  });
 }
