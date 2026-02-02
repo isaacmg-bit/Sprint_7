@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movieservice';
+import { Movie } from '../../models/movie';
 
 @Component({
   selector: 'app-moviecard',
@@ -14,14 +15,15 @@ export class MovieCard implements OnInit {
 
   movieId = signal<number>(0);
 
-  selectedMovie = computed(() => {
+  selectedMovie = computed((): Movie => {
     const id = this.movieId();
-    return this.movieService.movies().find((movie) => movie.id === id);
+
+    return this.movieService.movies().find((movie) => movie.id === id)!;
   });
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.movieId = params['id'];
+      this.movieId.set(+params['id']);
     });
   }
 }
