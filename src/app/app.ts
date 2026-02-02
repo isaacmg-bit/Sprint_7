@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Navbar } from './components/navbar/navbar';
@@ -9,6 +9,4 @@ import { Navbar } from './components/navbar/navbar';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected readonly title = signal('Peliculitas');
-}
+export class App {}

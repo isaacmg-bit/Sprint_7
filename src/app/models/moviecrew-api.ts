@@ -3,7 +3,6 @@ export interface MovieCrewApi {
 
   cast: {
     id: number;
-    cast_id: number;
     name: string;
     character: string;
     profile_path: string;

@@ -17,7 +17,7 @@ export class MovieCard {
   private readonly route = inject(ActivatedRoute);
   private readonly movieService = inject(MovieService);
 
-  private readonly movieId = toSignal(this.route.params.pipe(map((params) => +params['id'])), {
+  private movieId = toSignal(this.route.params.pipe(map((params) => +params['id'])), {
     initialValue: 0,
   });
 

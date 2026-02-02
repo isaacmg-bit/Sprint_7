@@ -1,5 +1,9 @@
 <div class="min-h-screen">
-  <app-header></app-header>
-  <app-navbar></app-navbar>
-  <router-outlet />
+  <app-header role="banner"></app-header>
+
+  <app-navbar role="navigation" aria-label="Main navigation"></app-navbar>
+
+  <main role="main" class="focus:outline-none" tabindex="-1">
+    <router-outlet></router-outlet>
+  </main>
 </div>

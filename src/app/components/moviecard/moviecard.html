@@ -1,10 +1,17 @@
 @if (selectedMovie(); as movie) {
   <div class="flex flex-wrap justify-center items-stretch gap-4 px-4 pb-8">
-    <div
-      class="xl:flex w-auto h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+    <figure
+      class="flex flex-col xl:flex-row w-full xl:w-auto h-auto xl:h-280 px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
+      tabindex="0"
+      role="group"
+      [attr.aria-label]="'Poster of ' + movie.title"
     >
-      <img class="object-cover h-full" [src]="movie.posterUrl" [alt]="movie.title" />
-    </div>
+      <img
+        class="w-full xl:w-auto h-auto xl:h-full object-cover rounded"
+        [src]="movie.posterUrl"
+        [alt]="'Poster of ' + movie.title"
+      />
+    </figure>
 
     <div
       class="flex h-auto w-full xl:max-w-6xl px-4 py-4 rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
@@ -14,28 +21,44 @@
       >
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Title</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'Movie title: ' + movie.title"
+          >
             {{ movie.title }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Genre</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'Genre: ' + movie.genresText"
+          >
             {{ movie.genresText }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Country</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'Country: ' + movie.origin_country"
+          >
             {{ movie.origin_country }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Runtime</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'Runtime: ' + movie.runtime + ' minutes'"
+          >
             {{ movie.runtime }} minutes
           </dd>
         </div>
@@ -43,7 +66,11 @@
         @if (selectedCrew(); as crew) {
           <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900 dark:text-white">Director</dt>
-            <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+            <dd
+              class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+              tabindex="0"
+              [attr.aria-label]="'Director: ' + crew.crewName"
+            >
               {{ crew.crewName }}
             </dd>
           </div>
@@ -51,29 +78,57 @@
           <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
             <dt class="font-medium text-gray-900 dark:text-white">Cast</dt>
             <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
-              @for (actor of crew.cast.slice(0, 10); track actor.id) {
-                <p>{{ actor.name }}</p>
-              }
+              <ul role="list">
+                @for (actor of crew.cast.slice(0, 10); track actor.id) {
+                  <li
+                    tabindex="0"
+                    role="group"
+                    [attr.aria-label]="actor.name + ', ' + actor.character"
+                    class="focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {{ actor.name }}
+                  </li>
+                }
+              </ul>
             </dd>
           </div>
         }
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">User score</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'User score: ' + movie.vote_average.toFixed(1)"
+          >
             {{ movie.vote_average.toFixed(1) }}
           </dd>
         </div>
 
         <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt class="font-medium text-gray-900 dark:text-white">Overview</dt>
-          <dd class="text-gray-700 sm:col-span-2 dark:text-gray-200">
+          <dd
+            class="text-gray-700 sm:col-span-2 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            tabindex="0"
+            [attr.aria-label]="'Overview: ' + movie.overview"
+          >
             {{ movie.overview }}
           </dd>
         </div>
 
         <div class="flex mt-10 justify-center">
-          <img class="object-cover h-full" [src]="movie.backdropUrl" [alt]="movie.title" />
+          <figure
+            tabindex="0"
+            role="group"
+            [attr.aria-label]="'Backdrop of ' + movie.title"
+            class="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+          >
+            <img
+              class="object-cover h-full"
+              [src]="movie.backdropUrl"
+              [alt]="'Backdrop of ' + movie.title"
+            />
+          </figure>
         </div>
       </dl>
     </div>
