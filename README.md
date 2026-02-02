@@ -207,16 +207,16 @@ export const environment = {
 
 ## Screenshots
 
-![Desktop version](public/assets/img/Desktop01.png)
-![Desktop version](public/assets/img/Desktop02.png)
-![Desktop version](public/assets/img/Desktop03.png)
-![Desktop version](public/assets/img/Desktop04.png)
-![Desktop version](public/assets/img/Desktop05.png)
-![Desktop version](public/assets/img/Desktop06.png)
-![Desktop version](public/assets/img/Desktop07.png)
-![Desktop demo](public/assets/img/DesktopDemo.gif)
-![Mobile demo](public/assets/img/MobileDemo.gif)
-![Tablet demo](public/assets/img/TabletDemo.gif)
+![Desktop version](src/assets/img/Desktop01.png)
+![Desktop version](src/assets/img/Desktop02.png)
+![Desktop version](src/assets/img/Desktop03.png)
+![Desktop version](src/assets/img/Desktop04.png)
+![Desktop version](src/assets/img/Desktop05.png)
+![Desktop version](src/assets/img/Desktop06.png)
+![Desktop version](src/assets/img/Desktop07.png)
+![Desktop demo](src/assets/img/DesktopDemo.gif)
+![Mobile demo](src/assets/img/MobileDemo.gif)
+![Tablet demo](src/assets/img/TabletDemo.gif)
 
 ---
 
