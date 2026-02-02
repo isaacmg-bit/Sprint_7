@@ -18,6 +18,7 @@
 - [Technologies](#technologies)
 - [Structure](#structure)
 - [Installation](#installation)
+- [API Configuration](#api-configuration)
 - [Features](#features)
 - [Usage](#usage)
 - [Screenshots](#screenshots)
@@ -136,25 +137,71 @@ ng serve
 # Open http://localhost:4200 in your browser
 ```
 
-### Environment Setup
+---
 
-Rename `src/environment/environment.ts to environmentlocal.ts`:
+## API Configuration
+
+This project uses [The Movie Database (TMDB) API](https://www.themoviedb.org/documentation/api) to fetch movie data.
+
+### Getting Your TMDB API Key
+
+1. Create a free account at [TMDB](https://www.themoviedb.org/signup)
+2. Go to your [Account Settings](https://www.themoviedb.org/settings/api)
+3. Click on "API" in the left sidebar
+4. Request an API key (choose "Developer" option)
+5. Fill out the application form
+6. Copy your API Key (v3 auth)
+
+### API Endpoints Used
+
+- `GET /movie/{movie_id}` - Get movie details
+- `GET /movie/{movie_id}/credits` - Get cast and crew information
+
+### Environment Configuration
+
+Add your API key to `src/environment/environmentlocal.ts`:
 
 ```typescript
 export const environment = {
-  production: false,
-  apiToken: '',
-  apiUrl: 'https://api.themoviedb.org/3/',
-  firebaseConfig: {
-    apiKey: '',
-    authDomain: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: '',
+  apiUrl: 'https://api.themoviedb.org/3',
+  apiKey: 'YOUR_TMDB_API_KEY_HERE',
+};
+```
+
+### API Rate Limits
+
+- Free tier: 40 requests per 10 seconds
+- No daily limit for free accounts
+- Read more: [TMDB API FAQ](https://www.themoviedb.org/talk/category/5047951f760ee3318900009a)
+
+### Firebase Setup
+
+This project also uses Firebase for authentication:
+
+1. Create a project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Email/Password authentication in Authentication section
+3. Copy your Firebase configuration
+4. Add it to your environment file
+
+```typescript
+export const environment = {
+  // ... TMDB config
+  firebase: {
+    apiKey: 'YOUR_FIREBASE_API_KEY',
+    authDomain: 'your-project.firebaseapp.com',
+    projectId: 'your-project-id',
+    storageBucket: 'your-project.firebasestorage.app',
+    messagingSenderId: 'YOUR_SENDER_ID',
+    appId: 'YOUR_APP_ID',
   },
 };
 ```
+
+---
+
+### Environment Setup
+
+Rename `src/environment/environment.ts to environmentlocal.ts`:
 
 ---
 
