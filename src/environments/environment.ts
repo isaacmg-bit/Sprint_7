@@ -1,9 +1,7 @@
 export const environment = {
   production: true,
-
-  apiToken: (window as any).NG_APP_API_KEY || '',
-  apiUrl: (window as any).NG_APP_API_URL || '',
-
+  apiToken: '',
+  apiUrl: '',
   firebaseConfig: {
     apiKey: '',
     authDomain: '',

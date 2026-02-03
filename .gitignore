@@ -42,7 +42,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
-src/environments/environmentlocal1.ts
+src/environments/environment_test.ts
 
 # Firebase
 .firebase
