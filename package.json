@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "config": "node config-env.js",
+    "build-vercel": "npm run config -- --environment=prod && ng build"
   },
   "prettier": {
     "printWidth": 100,
@@ -42,12 +44,14 @@
     "@angular/fire": "^21.0.0-rc.0",
     "@tailwindcss/postcss": "^4.1.12",
     "angular-eslint": "21.2.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.2",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.50.1",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "yargs": "^18.0.0"
   }
 }
