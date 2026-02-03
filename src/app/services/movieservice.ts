@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { ApiService } from './apirequest';
-import { environment } from '../../environments/environmentlocal';
+import { environment } from '../../environments/environment';
 import { MovieApi } from '../models/movie-api';
 import { Movie } from '../models/movie';
 import { forkJoin, Observable, of } from 'rxjs';
