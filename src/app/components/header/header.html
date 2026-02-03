@@ -1,20 +1,41 @@
-<header class="bg-black border-b border-gray-800 py-5">
-  <div class="max-w-7xl mx-auto px-4 relative flex items-center justify-center">
-    <div class="flex-1 flex justify-center">
-      <img src="/assets/img/logo.png" alt="Logo" class="h-16 w-auto" />
-    </div>
+<header aria-label="Main header">
+  <div class="max-w-7xl mx-auto px-4 py-5 relative flex items-center justify-between">
+    <div class="flex-1"></div>
 
-    <div class="absolute right-4 flex gap-4">
-      <button
-        class="px-6 py-2 border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300 font-bold"
-      >
-        LOGIN
-      </button>
-      <button
-        class="px-6 py-2 bg-white text-black hover:bg-gray-200 transition-all duration-300 font-bold"
-      >
-        REGISTER
-      </button>
+    <a
+      routerLink="/home"
+      class="flex justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+      aria-label="Go to home page"
+    >
+      <img
+        src="/assets/img/logo.png"
+        alt="Logo of the website"
+        class="w-64 h-auto cursor-pointer"
+      />
+    </a>
+
+    <div class="flex-1 flex justify-end items-center gap-4">
+      <span class="text-sm text-gray-400">
+        Hello <span class="text-white font-semibold">{{ userEmail() || 'Guest' }}</span
+        >!
+      </span>
+      @if (userEmail()) {
+        <button
+          (click)="logout()"
+          class="cursor-pointer px-4 py-2 text-sm font-semibold uppercase tracking-widest text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Logout"
+        >
+          Logout
+        </button>
+      } @else {
+        <button
+          [routerLink]="['/login']"
+          class="cursor-pointer px-4 py-2 text-sm font-semibold uppercase tracking-widest text-gray-400 hover:text-white rounded-lg bg-white/5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Login"
+        >
+          Login
+        </button>
+      }
     </div>
   </div>
 </header>
