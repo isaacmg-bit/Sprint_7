@@ -110,10 +110,8 @@ export class MovieService {
 
   private handleMovieError(error: HttpErrorResponse): Observable<Movie | null> {
     if (error.status === 404) {
-      console.warn('Movie not found, skipping...');
       return of(null);
     }
-    console.error('Error fetching movie', error);
     return of(null);
   }
 

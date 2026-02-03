@@ -30,11 +30,13 @@ export class Register {
 
       this.userService
         .register(formData)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           this.Router.navigate(['/login']);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          const message = error?.error?.message || 'Registration failed';
+          alert(message);
+        });
     }
   }
 

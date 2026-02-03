@@ -40,16 +40,17 @@ export class Login implements OnInit {
 
       this.userService
         .login(formData)
-        .then((response) => {
-          console.log(response);
-
+        .then(() => {
           if (this.fromMovies()) {
             this.router.navigate(['/movies']);
           } else {
             this.router.navigate(['/home']);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          const message = error?.error?.message || 'Login failed';
+          alert(message);
+        });
     }
   }
 
