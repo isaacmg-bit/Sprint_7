@@ -1,8 +1,7 @@
 export const environment = {
-  production: false,
-  apiToken:
-    '',
-  apiUrl: 'https://api.themoviedb.org/3/',
+  production: true,
+  apiToken: (window as any)['NG_APP_API_KEY'],
+  apiUrl: (window as any)['NG_APP_API_URL'],
   firebaseConfig: {
     apiKey: '',
     authDomain: '',
