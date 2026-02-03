@@ -29,8 +29,6 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-**/environmentlocal.ts
-src/environments/environmentlocal.ts
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -39,18 +37,14 @@ src/environments/environmentlocal.ts
 testem.log
 /typings
 __screenshots__/
-src/environments/environmentlocal.ts
+
 
 # System files
 .DS_Store
-<<<<<<< HEAD
 Thumbs.db
-=======
-Thumbs.db
-src/environments/environmentlocal.ts
+src/environments/environmentlocal1.ts
 
 # Firebase
 .firebase
 *-debug.log
 .runtimeconfig.json
->>>>>>> c0662177d44d40dc96e7dafac79384d7620a9026
